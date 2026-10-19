@@ -1,0 +1,12 @@
+lov hr-absence-types-absence-type-name (
+    name: HR_ABSENCE_TYPES.ABSENCE_TYPE_NAME
+    source {
+        tableName: HR_ABSENCE_TYPES
+    }
+    columnMapping {
+        return: ABSENCE_TYPE_ID
+        display: ABSENCE_TYPE_NAME
+        defaultSort: ABSENCE_TYPE_NAME
+    }
+)
+

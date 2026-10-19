@@ -1,0 +1,135 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry approval-history (
+        name: Approval History
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry employee-assignment (
+        name: Employee Assignment
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry employee-directory (
+        name: Employee Directory
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry employee-form (
+        name: Employee Form
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry employees (
+        name: Employees
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry leave-requests (
+        name: Leave Requests
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry payroll-dashboard (
+        name: Payroll Dashboard
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry payroll-management (
+        name: Payroll Management
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry process-payroll (
+        name: Process Payroll
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+)
+

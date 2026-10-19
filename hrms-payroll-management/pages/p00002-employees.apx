@@ -1,0 +1,302 @@
+page 2 (
+    name: Employees
+    alias: EMPLOYEES
+    title: Employees
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region employees (
+        name: Employees
+        type: interactiveReport
+        source {
+            location: localDatabase
+            tableName: HR_EMPLOYEES
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 4432803222494379
+        }
+
+        column CREATED_AT (
+            type: plainText
+            heading {
+                heading: Created At
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column DATE_OF_BIRTH (
+            type: plainText
+            heading {
+                heading: Date of Birth
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column EMAIL (
+            type: plainText
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column EMPLOYEE_ID (
+            type: hidden
+            heading {
+                heading: Employee ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column EMPLOYEE_NUMBER (
+            type: plainText
+            heading {
+                heading: Employee Number
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column EMPLOYMENT_STATUS (
+            type: plainText
+            heading {
+                heading: Employment Status
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column FIRST_NAME (
+            type: plainText
+            heading {
+                heading: First Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column GENDER (
+            type: plainText
+            heading {
+                heading: Gender
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column HIRE_DATE (
+            type: plainText
+            heading {
+                heading: Hire Date
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column LAST_NAME (
+            type: plainText
+            heading {
+                heading: Last Name
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column PHONE_NUMBER (
+            type: plainText
+            heading {
+                heading: Phone Number
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED_AT (
+                sequence: 11
+            )
+
+            displayColumn DATE_OF_BIRTH (
+                sequence: 7
+            )
+
+            displayColumn EMAIL (
+                sequence: 5
+            )
+
+            displayColumn EMPLOYEE_ID (
+                sequence: 1
+            )
+
+            displayColumn EMPLOYEE_NUMBER (
+                sequence: 2
+            )
+
+            displayColumn EMPLOYMENT_STATUS (
+                sequence: 10
+            )
+
+            displayColumn FIRST_NAME (
+                sequence: 3
+            )
+
+            displayColumn GENDER (
+                sequence: 9
+            )
+
+            displayColumn HIRE_DATE (
+                sequence: 8
+            )
+
+            displayColumn LAST_NAME (
+                sequence: 4
+            )
+
+            displayColumn PHONE_NUMBER (
+                sequence: 6
+            )
+
+        )
+
+    )
+
+)
+

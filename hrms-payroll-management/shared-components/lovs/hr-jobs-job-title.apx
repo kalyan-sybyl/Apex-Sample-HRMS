@@ -1,0 +1,12 @@
+lov hr-jobs-job-title (
+    name: HR_JOBS.JOB_TITLE
+    source {
+        tableName: HR_JOBS
+    }
+    columnMapping {
+        return: JOB_ID
+        display: JOB_TITLE
+        defaultSort: JOB_TITLE
+    }
+)
+

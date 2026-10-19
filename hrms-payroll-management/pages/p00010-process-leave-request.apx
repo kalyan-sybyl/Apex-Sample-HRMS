@@ -1,0 +1,147 @@
+page 10 (
+    name: Process Leave Request
+    alias: PROCESS-LEAVE-REQUEST
+    title: Process Leave Request
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    pageItem P10_COMMENTS (
+        type: textarea
+        label {
+            label: Approval/Rejection Comments
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            slot: body
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+    )
+
+    pageItem P10_REQUEST_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: body
+        }
+    )
+
+    button approve (
+        buttonName: APPROVE
+        label: Approve Request
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reject (
+        buttonName: REJECT
+        label: Reject Request
+        layout {
+            sequence: 70
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process process-leave-approval (
+        name: Process Leave Approval
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                DECLARE
+                    v_approver_id NUMBER;
+                BEGIN
+                    SELECT employee_id
+                    INTO v_approver_id
+                    FROM HR_EMPLOYEES
+                    WHERE employee_number = 'EMP001';
+                
+                    PROCESS_LEAVE_REQUEST(
+                        p_request_id  => :P10_REQUEST_ID,
+                        p_approver_id => v_approver_id,
+                        p_decision    => 'APPROVED',
+                        p_comments    => :P10_COMMENTS
+                    );
+                END;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Leave request approved successfully.
+        }
+        advanced {
+            executionMappingIdentifier: 4486666875628402
+        }
+        serverSideCondition {
+            whenButtonPressed: @approve
+        }
+    )
+
+    process process-leave-rejection (
+        name: Process Leave Rejection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                
+                DECLARE
+                    v_approver_id NUMBER;
+                BEGIN
+                    SELECT employee_id
+                    INTO v_approver_id
+                    FROM HR_EMPLOYEES
+                    WHERE employee_number = 'EMP001';
+                
+                    PROCESS_LEAVE_REQUEST(
+                        p_request_id  => :P10_REQUEST_ID,
+                        p_approver_id => v_approver_id,
+                        p_decision    => 'REJECTED',
+                        p_comments    => :P10_COMMENTS
+                    );
+                END;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Leave request rejected successfully.
+        }
+        advanced {
+            executionMappingIdentifier: 4487087372628406
+        }
+        serverSideCondition {
+            whenButtonPressed: @reject
+        }
+    )
+
+)
+

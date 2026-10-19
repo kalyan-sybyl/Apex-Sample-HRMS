@@ -1,0 +1,324 @@
+page 17 (
+    name: Payroll Dashboard
+    alias: PAYROLL-DASHBOARD
+    title: Payroll Dashboard
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region employee-salary-comparison (
+        name: Employee Salary Comparison
+        title: Employee Salary Comparison
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        chartLayout {
+            height: 400
+        }
+        performance {
+            lazyLoading: true
+        }
+
+        series gross-salary-by-employee (
+            name: Gross Salary by Employee
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT
+                        e.EMPLOYEE_NUMBER || ' - ' ||
+                            e.FIRST_NAME || ' ' || e.LAST_NAME AS EMPLOYEE_NAME,
+                        p.GROSS_SALARY
+                    FROM HR_PAYROLL p
+                    JOIN HR_EMPLOYEES e
+                        ON e.EMPLOYEE_ID = p.EMPLOYEE_ID
+                    WHERE p.PAY_PERIOD_MONTH = 10
+                      AND p.PAY_PERIOD_YEAR = 2026
+                    ORDER BY e.EMPLOYEE_NUMBER
+                    ```
+            }
+            columnMapping {
+                label: EMPLOYEE_NAME
+                value: GROSS_SALARY
+            }
+        )
+
+        axis x (
+            name: x
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+        )
+
+    )
+
+    region payroll-overview (
+        name: Payroll Overview
+        title: Payroll Overview
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT
+                    'Total Payroll Records' AS CARD_TITLE,
+                    TO_CHAR(COUNT(*)) AS CARD_VALUE,
+                    'All payroll statuses' AS CARD_SUBTITLE
+                FROM HR_PAYROLL
+                WHERE PAY_PERIOD_MONTH = 10
+                  AND PAY_PERIOD_YEAR = 2026
+                
+                UNION ALL
+                
+                SELECT
+                    'Total Gross Payroll',
+                    TO_CHAR(NVL(SUM(GROSS_SALARY), 0), 'FM999G999G999G990'),
+                    'October 2026'
+                FROM HR_PAYROLL
+                WHERE PAY_PERIOD_MONTH = 10
+                  AND PAY_PERIOD_YEAR = 2026
+                
+                UNION ALL
+                
+                SELECT
+                    'Total Net Payroll',
+                    TO_CHAR(NVL(SUM(NET_SALARY), 0), 'FM999G999G999G990'),
+                    'October 2026'
+                FROM HR_PAYROLL
+                WHERE PAY_PERIOD_MONTH = 10
+                  AND PAY_PERIOD_YEAR = 2026
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        title {
+            column: CARD_TITLE
+        }
+        body {
+            column: CARD_VALUE
+        }
+        secondaryBody {
+            column: CARD_SUBTITLE
+        }
+    )
+
+    region payroll-status-distribution (
+        name: Payroll Status Distribution
+        title: Payroll Status Distribution
+        type: chart
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: donut
+        }
+        chartLayout {
+            height: 400
+        }
+        performance {
+            lazyLoading: true
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series payroll-status (
+            name: Payroll Status
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT
+                        PAYROLL_STATUS,
+                        COUNT(*) AS RECORD_COUNT
+                    FROM HR_PAYROLL
+                    WHERE PAY_PERIOD_MONTH = 10
+                      AND PAY_PERIOD_YEAR = 2026
+                    GROUP BY PAYROLL_STATUS
+                    ORDER BY PAYROLL_STATUS
+                    ```
+            }
+            columnMapping {
+                label: PAYROLL_STATUS
+                value: RECORD_COUNT
+            }
+        )
+
+    )
+
+    region payroll-summary (
+        name: Payroll Summary
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                
+                SELECT
+                    PAYROLL_STATUS,
+                    COUNT(*) AS RECORD_COUNT,
+                    SUM(GROSS_SALARY) AS TOTAL_GROSS,
+                    SUM(NET_SALARY) AS TOTAL_NET
+                FROM HR_PAYROLL
+                WHERE PAY_PERIOD_MONTH = 10
+                  AND PAY_PERIOD_YEAR = 2026
+                GROUP BY PAYROLL_STATUS
+                ORDER BY PAYROLL_STATUS
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: showAll
+        }
+
+        column PAYROLL_STATUS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Payroll Status
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RECORD_COUNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Record Count
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TOTAL_GROSS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Total Gross
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TOTAL_NET (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Total Net
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+)
+

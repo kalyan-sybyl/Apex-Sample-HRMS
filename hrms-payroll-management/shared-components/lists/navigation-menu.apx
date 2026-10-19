@@ -1,0 +1,154 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry approval-history (
+        label: Approval History
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry employee-assignment (
+        label: Employee Assignment
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry employee-directory (
+        label: Employee Directory
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry employee-form (
+        label: Employee Form
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry employees (
+        label: Employees
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry leave-requests (
+        label: Leave Requests
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 8
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry payroll-dashboard (
+        label: Payroll Dashboard
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 90
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry payroll-management (
+        label: Payroll Management
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: 13
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,216 @@
+page 11 (
+    name: Approval History
+    alias: APPROVAL-HISTORY
+    title: Approval History
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region approval-history (
+        name: Approval History
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT
+                    h.history_id,
+                    h.request_id,
+                    e.first_name || ' ' || e.last_name AS processed_by,
+                    h.decision,
+                    h.processed_at,
+                    h.comments
+                FROM HR_APPROVAL_HISTORY h
+                JOIN HR_EMPLOYEES e
+                    ON e.employee_id = h.processed_by
+                ORDER BY h.processed_at DESC
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 4605073695846003
+        }
+
+        column COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column DECISION (
+            type: plainText
+            heading {
+                heading: Decision
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column HISTORY_ID (
+            type: plainText
+            heading {
+                heading: History Id
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PROCESSED_AT (
+            type: plainText
+            heading {
+                heading: Processed At
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PROCESSED_BY (
+            type: plainText
+            heading {
+                heading: Processed By
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column REQUEST_ID (
+            type: plainText
+            heading {
+                heading: Request Id
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn COMMENTS (
+                sequence: 6
+            )
+
+            displayColumn DECISION (
+                sequence: 4
+            )
+
+            displayColumn HISTORY_ID (
+                sequence: 1
+            )
+
+            displayColumn PROCESSED_AT (
+                sequence: 5
+            )
+
+            displayColumn PROCESSED_BY (
+                sequence: 3
+            )
+
+            displayColumn REQUEST_ID (
+                sequence: 2
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+
