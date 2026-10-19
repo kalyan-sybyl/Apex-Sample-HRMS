@@ -1,0 +1,440 @@
+page 5 (
+    name: Employee Assignment
+    alias: EMPLOYEE-ASSIGNMENT
+    title: Employee Assignment
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region employee-assignment (
+        name: Employee Assignment
+        type: form
+        source {
+            location: localDatabase
+            tableName: HR_ASSIGNMENTS
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P5_ASSIGNMENT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @employee-assignment
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-assignment
+            column: ASSIGNMENT_ID
+            dataType: number
+            queryOnly: true
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P5_ASSIGNMENT_STATUS (
+        type: textField
+        label {
+            label: Assignment Status
+            alignment: right
+        }
+        layout {
+            sequence: 80
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 20
+        }
+        source {
+            formRegion: @employee-assignment
+            column: ASSIGNMENT_STATUS
+            dataType: varchar2
+        }
+    )
+
+    pageItem P5_DEPARTMENT_ID (
+        type: selectList
+        label {
+            label: Department Id
+            alignment: right
+        }
+        lov {
+            type: sharedComponent
+            lov: @hr-departments-department-name
+        }
+        layout {
+            sequence: 30
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee-assignment
+            column: DEPARTMENT_ID
+            dataType: number
+        }
+    )
+
+    pageItem P5_EMPLOYEE_ID (
+        type: selectList
+        label {
+            label: Employee Id
+            alignment: right
+        }
+        lov {
+            type: sharedComponent
+            lov: @hr-employees-employee-number
+        }
+        layout {
+            sequence: 20
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee-assignment
+            column: EMPLOYEE_ID
+            dataType: number
+        }
+    )
+
+    pageItem P5_END_DATE (
+        type: datePicker
+        label {
+            label: End Date
+            alignment: right
+        }
+        layout {
+            sequence: 70
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @employee-assignment
+            column: END_DATE
+            dataType: date
+        }
+    )
+
+    pageItem P5_JOB_ID (
+        type: selectList
+        label {
+            label: Job Id
+            alignment: right
+        }
+        lov {
+            type: sharedComponent
+            lov: @hr-jobs-job-title
+        }
+        layout {
+            sequence: 40
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee-assignment
+            column: JOB_ID
+            dataType: number
+        }
+    )
+
+    pageItem P5_MANAGER_ID (
+        type: selectList
+        label {
+            label: Manager Id
+            alignment: right
+        }
+        lov {
+            type: sharedComponent
+            lov: @hr-employees-employee-number
+        }
+        layout {
+            sequence: 50
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @employee-assignment
+            column: MANAGER_ID
+            dataType: number
+        }
+    )
+
+    pageItem P5_SALARY (
+        type: numberField
+        label {
+            label: Salary
+            alignment: right
+        }
+        layout {
+            sequence: 90
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @employee-assignment
+            column: SALARY
+            dataType: number
+        }
+    )
+
+    pageItem P5_START_DATE (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: right
+        }
+        layout {
+            sequence: 60
+            region: @employee-assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @employee-assignment
+            column: START_DATE
+            dataType: date
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @employee-assignment
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @employee-assignment
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P5_ASSIGNMENT_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @employee-assignment
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_ASSIGNMENT_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @employee-assignment
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_ASSIGNMENT_ID
+        }
+    )
+
+    process initialize-form-employee-assignment (
+        name: Initialize form Employee Assignment
+        type: formInitialization
+        formRegion: @employee-assignment
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4466972965546929
+        }
+    )
+
+    process process-form-employee-assignment (
+        name: Process form Employee Assignment
+        type: formAutoRowProcessing
+        formRegion: @employee-assignment
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 4467306317546932
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 1
+        }
+        behavior {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+)
+

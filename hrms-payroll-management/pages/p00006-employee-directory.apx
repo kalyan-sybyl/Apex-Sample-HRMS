@@ -1,0 +1,261 @@
+page 6 (
+    name: Employee Directory
+    alias: EMPLOYEE-DIRECTORY
+    title: Employee Directory
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region employee-directory (
+        name: Employee Directory
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT
+                    e.employee_id,
+                    e.employee_number,
+                    e.first_name || ' ' || e.last_name AS employee_name,
+                    e.email,
+                    d.department_name,
+                    j.job_title,
+                    a.salary,
+                    a.assignment_status
+                FROM HR_EMPLOYEES e
+                LEFT JOIN HR_ASSIGNMENTS a
+                    ON a.employee_id = e.employee_id
+                LEFT JOIN HR_DEPARTMENTS d
+                    ON d.department_id = a.department_id
+                LEFT JOIN HR_JOBS j
+                    ON j.job_id = a.job_id
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 4469470121564856
+        }
+
+        column ASSIGNMENT_STATUS (
+            type: plainText
+            heading {
+                heading: Assignment Status
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column DEPARTMENT_NAME (
+            type: plainText
+            heading {
+                heading: Department Name
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column EMAIL (
+            type: plainText
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column EMPLOYEE_ID (
+            type: plainText
+            heading {
+                heading: Employee Id
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column EMPLOYEE_NAME (
+            type: plainText
+            heading {
+                heading: Employee Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column EMPLOYEE_NUMBER (
+            type: plainText
+            heading {
+                heading: Employee Number
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column JOB_TITLE (
+            type: plainText
+            heading {
+                heading: Job Title
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column SALARY (
+            type: plainText
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ASSIGNMENT_STATUS (
+                sequence: 8
+            )
+
+            displayColumn DEPARTMENT_NAME (
+                sequence: 5
+            )
+
+            displayColumn EMAIL (
+                sequence: 4
+            )
+
+            displayColumn EMPLOYEE_ID (
+                sequence: 1
+            )
+
+            displayColumn EMPLOYEE_NAME (
+                sequence: 3
+            )
+
+            displayColumn EMPLOYEE_NUMBER (
+                sequence: 2
+            )
+
+            displayColumn JOB_TITLE (
+                sequence: 6
+            )
+
+            displayColumn SALARY (
+                sequence: 7
+            )
+
+        )
+
+    )
+
+)
+

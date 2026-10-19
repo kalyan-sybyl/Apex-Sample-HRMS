@@ -1,0 +1,12 @@
+lov hr-employees-employee-number (
+    name: HR_EMPLOYEES.EMPLOYEE_NUMBER
+    source {
+        tableName: HR_EMPLOYEES
+    }
+    columnMapping {
+        return: EMPLOYEE_ID
+        display: EMPLOYEE_NUMBER
+        defaultSort: EMPLOYEE_NUMBER
+    }
+)
+

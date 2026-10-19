@@ -1,0 +1,361 @@
+page 13 (
+    name: Payroll Management
+    alias: PAYROLL-MANAGEMENT
+    title: Payroll Management
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region payroll-management (
+        name: Payroll Management
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                
+                SELECT
+                    p.PAYROLL_ID,
+                    e.EMPLOYEE_NUMBER,
+                    e.FIRST_NAME || ' ' || e.LAST_NAME AS EMPLOYEE_NAME,
+                    p.PAY_PERIOD_MONTH,
+                    p.PAY_PERIOD_YEAR,
+                    p.BASIC_SALARY,
+                    p.ALLOWANCES,
+                    p.DEDUCTIONS,
+                    p.GROSS_SALARY,
+                    p.NET_SALARY,
+                    p.PAYROLL_STATUS,
+                    p.CREATED_AT
+                FROM HR_PAYROLL p
+                JOIN HR_EMPLOYEES e
+                    ON e.EMPLOYEE_ID = p.EMPLOYEE_ID
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 4624289830965890
+        }
+
+        column ALLOWANCES (
+            type: plainText
+            heading {
+                heading: Allowances
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column BASIC_SALARY (
+            type: plainText
+            heading {
+                heading: Basic Salary
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CREATED_AT (
+            type: plainText
+            heading {
+                heading: Created At
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column DEDUCTIONS (
+            type: plainText
+            heading {
+                heading: Deductions
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column EMPLOYEE_NAME (
+            type: plainText
+            heading {
+                heading: Employee Name
+            }
+            layout {
+                sequence: 31
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column EMPLOYEE_NUMBER (
+            type: link
+            heading {
+                heading: Employee Number
+            }
+            layout {
+                sequence: 21
+            }
+            link {
+                target: {
+                    page: 16
+                    items: {
+                        P16_PAYROLL_ID: #PAYROLL_ID#
+                    }
+                }
+                linkText: #EMPLOYEE_NUMBER#
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: R
+            }
+            enableUsersTo {
+                hide: false
+            }
+        )
+
+        column GROSS_SALARY (
+            type: plainText
+            heading {
+                heading: Gross Salary
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column NET_SALARY (
+            type: plainText
+            heading {
+                heading: Net Salary
+                alignment: end
+            }
+            layout {
+                sequence: 9
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column PAYROLL_ID (
+            type: plainText
+            heading {
+                heading: Payroll ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PAYROLL_STATUS (
+            type: plainText
+            heading {
+                heading: Payroll Status
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column PAY_PERIOD_MONTH (
+            type: plainText
+            heading {
+                heading: Pay Period Month
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column PAY_PERIOD_YEAR (
+            type: plainText
+            heading {
+                heading: Pay Period Year
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ALLOWANCES (
+                sequence: 5
+            )
+
+            displayColumn BASIC_SALARY (
+                sequence: 4
+            )
+
+            displayColumn CREATED_AT (
+                sequence: 10
+            )
+
+            displayColumn DEDUCTIONS (
+                sequence: 6
+            )
+
+            displayColumn GROSS_SALARY (
+                sequence: 7
+            )
+
+            displayColumn NET_SALARY (
+                sequence: 8
+            )
+
+            displayColumn PAYROLL_ID (
+                sequence: 1
+            )
+
+            displayColumn PAYROLL_STATUS (
+                sequence: 9
+            )
+
+            displayColumn PAY_PERIOD_MONTH (
+                sequence: 2
+            )
+
+            displayColumn PAY_PERIOD_YEAR (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+)
+

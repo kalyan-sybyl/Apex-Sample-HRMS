@@ -1,0 +1,12 @@
+lov hr-departments-department-name (
+    name: HR_DEPARTMENTS.DEPARTMENT_NAME
+    source {
+        tableName: HR_DEPARTMENTS
+    }
+    columnMapping {
+        return: DEPARTMENT_ID
+        display: DEPARTMENT_NAME
+        defaultSort: DEPARTMENT_NAME
+    }
+)
+

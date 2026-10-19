@@ -1,0 +1,322 @@
+page 8 (
+    name: Leave Requests
+    alias: LEAVE-REQUESTS
+    title: Leave Requests
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region leave-requests (
+        name: Leave Requests
+        type: interactiveReport
+        source {
+            location: localDatabase
+            tableName: HR_ABSENCE_REQUESTS
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 4479478820584685
+        }
+
+        column ABSENCE_TYPE_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Absence Type
+            }
+            lov {
+                lov: @hr-absence-types-absence-type-name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column APPROVAL_DATE (
+            type: plainText
+            heading {
+                heading: Approval Date
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column APPROVED_BY (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Approved By
+            }
+            lov {
+                lov: @hr-employees-employee-number
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CREATED_AT (
+            type: plainText
+            heading {
+                heading: Created At
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column DAYS_REQUESTED (
+            type: plainText
+            heading {
+                heading: Days Requested
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column EMPLOYEE_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Employee
+            }
+            lov {
+                lov: @hr-employees-employee-number
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 10
+                    items: {
+                        P10_REQUEST_ID: #REQUEST_ID#
+                    }
+                }
+                linkText: #EMPLOYEE_ID#
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column END_DATE (
+            type: plainText
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column REASON (
+            type: plainText
+            heading {
+                heading: Reason
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column REQUEST_ID (
+            type: hidden
+            heading {
+                heading: Request ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column REQUEST_STATUS (
+            type: plainText
+            heading {
+                heading: Request Status
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column START_DATE (
+            type: plainText
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ABSENCE_TYPE_ID (
+                sequence: 3
+            )
+
+            displayColumn APPROVAL_DATE (
+                sequence: 10
+            )
+
+            displayColumn APPROVED_BY (
+                sequence: 9
+            )
+
+            displayColumn CREATED_AT (
+                sequence: 11
+            )
+
+            displayColumn DAYS_REQUESTED (
+                sequence: 6
+            )
+
+            displayColumn EMPLOYEE_ID (
+                sequence: 2
+            )
+
+            displayColumn END_DATE (
+                sequence: 5
+            )
+
+            displayColumn REASON (
+                sequence: 7
+            )
+
+            displayColumn REQUEST_ID (
+                sequence: 1
+            )
+
+            displayColumn REQUEST_STATUS (
+                sequence: 8
+            )
+
+            displayColumn START_DATE (
+                sequence: 4
+            )
+
+        )
+
+    )
+
+)
+
